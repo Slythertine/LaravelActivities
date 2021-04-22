@@ -8,11 +8,13 @@
             <div class="card">
                 <div class="card-body">
 
-                    <a  href="/posts/{{$post->id}}/edit" class="btn btn-warning"> Edit </a>
+                    <a  href="/posts/{{$post->id}}/edit" class="btn btn-warning">Edit </a>
                         <br>
                         Title: {{ $post->title }} <br>
                         Description: {{ $post->description }} <br>
-                        Created At: {{ $post->created_at }}
+                        Created At: {{ $post->created_at }}  <br>
+                        Image:
+                        <img src="{{ asset('/storage/img/'.$post->img) }}">
                 </div>
             </div>
         </div>
