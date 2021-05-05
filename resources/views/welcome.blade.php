@@ -20,7 +20,21 @@
             }
         </style>
     </head>
-    <body class="antialiased">
-
-    </body>
+    <div class="max-w-6xl">
+        <div class="container">
+            @foreach ($posts as $post)
+                <div class="card">
+                    <img class="card-img-top" src="{{ asset('/storage/img', $post->img) }}" alt="IMAGE" width="50%">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"> {{ $post->title }}</h5>
+                    <p class="card-text">{{ $post->description }}</p>
+                </div>
+                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-warning">View Post</a>
+                <div class="card-footer">
+                    <small class="text-muted">Last Updated {{ $post->updated_at }}</small>
+                </div>
+            @endforeach
+        </div>
+    </div>
 </html>
