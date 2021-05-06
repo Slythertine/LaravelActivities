@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class PostsController extends Controller
 {
@@ -14,8 +17,10 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::get();
-        return view('posts.index', compact('posts'));
+        $user = User::find(Auth::id());
+        $posts = $user->posts()->orderBy('created_at','desc')->get();
+        $count = $user->posts()->where('title','!=','')->count();
+        return view('posts.index', compact('posts', 'count'));
     }
 
     /**
@@ -53,12 +58,14 @@ class PostsController extends Controller
         }
 
         $post = new Post();
-        $post->title = $request->title;
-        $post->description = $request->description;
+        $post->fill($request->all());
         $post->img = $fileNameToStore;
-        $post->save();
+        $post->user_id = auth()->user()->id;
+        if($post->save()){
+            $message = "Successfully save";
+        }
 
-        return redirect('/posts');
+        return redirect('/posts')->with('message', $message);
     }
 
     /**
@@ -69,7 +76,9 @@ class PostsController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        $post = Post::find($post->id);
+        $comments = $post->comments;
+        return view('posts.show', compact('post','comments'));
     }
 
     /**
@@ -97,8 +106,9 @@ class PostsController extends Controller
             'description' => 'required'
         ]);
 
-        $post = Post::find($id);
+        $post = Post::find($post->id);
         $post->fill($request->all());
+        $post->user_id = auth()->user()->id;
         $post->save();
 
         return redirect('/posts');

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\CommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,12 @@ Route::resources([
     'posts' => PostsController::class,
 ]);
 
+Route::resources([
+    'comments' => CommentsController::class,
+]);
+
 Auth::routes();
+
+
 
 

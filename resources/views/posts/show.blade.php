@@ -14,7 +14,38 @@
                         Description: {{ $post->description }} <br>
                         Created At: {{ $post->created_at }}  <br>
                         Image:
-                        <img src="{{ asset('/storage/img/'.$post->img) }}">
+                        <img src="{{ asset('/storage/img/'.$post->img) }}" width="300px">
+
+                        @if ($comments)
+                        <h2>COMMENTS</h2>
+                        @foreach ($comments as $comment)
+                            <div class="display-comment" >
+
+                                <p>{{ $comment->description }}</p>
+                                {{-- <form method="post" action="{{ route('comments.store') }}">
+                                    @csrf
+                                    <div class="form-group">
+                                        <input type="text" name="description" class="form-control" />
+                                        <input type="hidden" name="post_id" value="{{ $comment->post_id }}" />
+                                        <input type="hidden" name="parent_id" value="{{ $comment->id }}" />
+                                    </div>
+                                </form> --}}
+                            </div>
+                        @endforeach
+                    @endif
+
+                    <h4>Add Comment </h4>
+                    <form method="post" action="{{ route('comments.store') }}">
+                        @csrf
+                        <div class="form-group">
+                            <textarea name="description" id="description" class="form-control"></textarea>
+                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        </div>
+                        <div class="form-group">
+                                <input type="submit" class="btn btn-success" value="Add Commnet">
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
